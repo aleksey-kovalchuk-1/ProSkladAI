@@ -8,3 +8,4 @@ export * from "./badge";
 export * from "./stat-tile";
 export * from "./switch";
 export * from "./confirm-dialog";
+export * from "./table";
