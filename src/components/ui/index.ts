@@ -9,3 +9,4 @@ export * from "./stat-tile";
 export * from "./switch";
 export * from "./confirm-dialog";
 export * from "./table";
+export * from "./selectable-image-grid";
