@@ -33,3 +33,6 @@ dist/
 # Editor / tooling
 .claude/settings.local.json
 .DS_Store
+
+# Superpowers SDD workspace (scratch, not part of history)
+.superpowers/
