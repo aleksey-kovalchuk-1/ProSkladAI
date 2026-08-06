@@ -71,7 +71,7 @@ const RegisterPage: React.FC = () => {
             />
           )}
         </FormField>
-        <FormField id="confirmPassword" label="Подтверждение пароля">
+        <FormField id="confirmPassword" label="Подтверждение пароля" error={localError}>
           {(field) => (
             <Input
               {...field}
