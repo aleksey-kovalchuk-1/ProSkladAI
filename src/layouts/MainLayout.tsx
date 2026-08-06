@@ -1,7 +1,7 @@
 // src/layouts/MainLayout.tsx
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/authStore';
 
 // Иконки (можно заменить на библиотеку lucide-react или heroicons)
 import {
@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const MainLayout: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 

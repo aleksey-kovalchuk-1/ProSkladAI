@@ -1,6 +1,6 @@
 // src/pages/Dashboard/ProfilePage.tsx
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/authStore';
 import { User } from '@/api/types';
 import {
   User as UserIcon,
@@ -35,7 +35,7 @@ const changePassword = async (oldPassword: string, newPassword: string): Promise
 };
 
 const ProfilePage: React.FC = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, isLoading: authLoading } = useAuthStore();
 
   // Состояния для формы профиля
   const [fullName, setFullName] = useState<string>('');

@@ -1,7 +1,7 @@
 // src/pages/Dashboard/DashboardPage.tsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/authStore';
 import { useGoods } from '@/hooks/useGoods';
 import {
   Package,
@@ -57,7 +57,7 @@ const contentDistribution = [
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981'];
 
 const DashboardPage: React.FC = () => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const { goods, loading: goodsLoading, fetchGoods } = useGoods();
   const [stats, setStats] = useState<DashboardStats>({
     totalGoods: 0,
