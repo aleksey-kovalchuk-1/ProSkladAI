@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { generateSeo, saveSeoToGoods, getSeoHistory } from '@/api/seo';
 import type { GoodsItem, SeoGenerationResponse } from '@/api/types';
 import { Alert, Badge, Button } from '@/components/ui';
-import { Save, Sparkles } from 'lucide-react';
+import { Loader2, Save, Sparkles } from 'lucide-react';
 
 interface SeoTabProps {
   goodsItem: GoodsItem;
@@ -21,6 +21,11 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
   const [generatedSeo, setGeneratedSeo] = useState<SeoGenerationResponse | null>(null);
   const [seoLoading, setSeoLoading] = useState<boolean>(false);
   const [seoError, setSeoError] = useState<string | null>(null);
+  // Загрузка истории при монтировании вкладки. Отдельный флаг от seoLoading:
+  // тот относится к генерации/сохранению по кнопке. Стартует как true, иначе
+  // пустое состояние успевает мигнуть до ответа сервера — а вкладка теперь
+  // монтируется заново при каждом переключении, так что мигало бы часто.
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
   // Ошибка первичной загрузки истории. Раньше она только писалась в console.error,
   // из-за чего упавший запрос выглядел точно так же, как «SEO ещё не генерировали».
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -32,6 +37,7 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      setInitialLoading(true);
       setLoadError(null);
       try {
         const history = await getSeoHistory(goodsId);
@@ -43,6 +49,8 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
       } catch (err: any) {
         if (cancelled) return;
         setLoadError(err?.message || 'Не удалось загрузить историю SEO');
+      } finally {
+        if (!cancelled) setInitialLoading(false);
       }
     };
     void load();
@@ -99,6 +107,13 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
       {loadError && <Alert variant="error">{loadError}</Alert>}
       {seoError && <Alert variant="error">{seoError}</Alert>}
 
+      {initialLoading && (
+        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400" role="status">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Загрузка истории SEO...
+        </div>
+      )}
+
       {generatedSeo ? (
         <div className="space-y-4">
           {/*
@@ -136,8 +151,10 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
           </div>
         </div>
       ) : (
-        // При ошибке загрузки пустое состояние не показываем — иначе сбой снова
-        // выглядел бы как «данных просто нет».
+        // Пустое состояние показываем только когда загрузка завершилась и не упала:
+        // при ошибке оно выглядело бы как «данных просто нет», а во время загрузки —
+        // утверждало бы, что SEO не генерировали, ещё не зная этого.
+        !initialLoading &&
         !loadError && <p className="text-gray-500 dark:text-gray-400">SEO ещё не сгенерировано.</p>
       )}
 

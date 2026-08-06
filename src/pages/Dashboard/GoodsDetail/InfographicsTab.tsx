@@ -7,7 +7,7 @@ import {
 } from '@/api/infographics';
 import type { GoodsItem } from '@/api/types';
 import { Alert, Button, ConfirmDialog, SelectableImageGrid } from '@/components/ui';
-import { Save, Search, Trash2 } from 'lucide-react';
+import { Loader2, Save, Search, Trash2 } from 'lucide-react';
 
 interface InfographicsTabProps {
   goodsItem: GoodsItem;
@@ -36,6 +36,11 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  // Загрузка сохранённого списка при монтировании. Отдельно от infographicsLoading,
+  // который выставляется только обработчиками поиска и сохранения: без своего флага
+  // пустое состояние успевало мигнуть до ответа сервера, причём при каждом
+  // переключении вкладок, ведь вкладка монтируется заново.
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
   // Загрузка сохранённой инфографики при монтировании вкладки.
   // `getGoodsInfographics` — прямой axios-вызов без внутреннего catch, ошибка
@@ -43,6 +48,7 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      setInitialLoading(true);
       setLoadError(null);
       try {
         const images = await getGoodsInfographics(goodsId);
@@ -51,6 +57,8 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
       } catch (err: any) {
         if (cancelled) return;
         setLoadError(err?.message || 'Не удалось загрузить сохранённую инфографику');
+      } finally {
+        if (!cancelled) setInitialLoading(false);
       }
     };
     void load();
@@ -128,7 +136,10 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
     );
   }, []);
 
+  // Пустое состояние — только когда сохранённый список действительно загружен и пуст.
+  // `initialLoading` покрывает первичную загрузку, `infographicsLoading` — поиск.
   const showEmptyState =
+    !initialLoading &&
     !loadError &&
     infographics.length === 0 &&
     foundImages.length === 0 &&
@@ -146,6 +157,13 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
 
       {loadError && <Alert variant="error">{loadError}</Alert>}
       {infographicsError && <Alert variant="error">{infographicsError}</Alert>}
+
+      {initialLoading && (
+        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400" role="status">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Загрузка сохранённой инфографики...
+        </div>
+      )}
 
       {/* Сохранённая инфографика */}
       {infographics.length > 0 && (

@@ -5,7 +5,7 @@ import { getSeoHistory } from '@/api/seo';
 import { getGoodsInfographics } from '@/api/infographics';
 import type { GoodsItem } from '@/api/types';
 import { Alert, Badge, Button } from '@/components/ui';
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, Loader2 } from 'lucide-react';
 
 interface ReportsTabProps {
   goodsItem: GoodsItem;
@@ -24,10 +24,14 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ goodsItem }) => {
   const [seoCount, setSeoCount] = useState<number | null>(null);
   const [infographicsCount, setInfographicsCount] = useState<number | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  // Без этого флага сводка печатала «—», что одинаково читалось и как «ещё грузим»,
+  // и как «действительно ноль».
+  const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      setInitialLoading(true);
       setLoadError(null);
       try {
         const [history, images] = await Promise.all([
@@ -40,6 +44,8 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ goodsItem }) => {
       } catch (err: any) {
         if (cancelled) return;
         setLoadError(err?.message || 'Не удалось загрузить сводку по товару');
+      } finally {
+        if (!cancelled) setInitialLoading(false);
       }
     };
     void load();
@@ -65,11 +71,20 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ goodsItem }) => {
         «Отчёты» для просмотра и создания новых.
       </p>
 
-      {!loadError && (
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="neutral">SEO-генераций: {seoCount ?? '—'}</Badge>
-          <Badge variant="neutral">Инфографики: {infographicsCount ?? '—'}</Badge>
+      {initialLoading ? (
+        <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400" role="status">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Загрузка сводки...
         </div>
+      ) : (
+        // Счётчики рендерятся только после успешной загрузки, поэтому число здесь
+        // всегда настоящее — «0» означает ноль, а не «ещё не знаем».
+        !loadError && (
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="neutral">SEO-генераций: {seoCount ?? 0}</Badge>
+            <Badge variant="neutral">Инфографики: {infographicsCount ?? 0}</Badge>
+          </div>
+        )
       )}
     </div>
   );
