@@ -69,20 +69,33 @@ const seoModelOptions: { value: UserSettings['seoModel']; label: string; icon: t
   { value: 'chatgpt', label: 'ChatGPT', icon: Zap },
 ];
 
+// Тема — единственное поле, которое читается НЕ из SETTINGS_KEY: THEME_KEY пишется
+// сразу при выборе темы, а SETTINGS_KEY обновляется только по кнопке «Сохранить».
+// Если бы тему брали из SETTINGS_KEY, то после перезагрузки без явного сохранения
+// эффект синхронизации на монтировании откатил бы уже применённый main.tsx выбор
+// и вдобавок перезаписал бы THEME_KEY старым значением. THEME_KEY авторитетен для
+// того, что реально применено; SETTINGS_KEY хранит копию темы для полноты объекта.
+const loadTheme = (): UserSettings['theme'] => {
+  const saved = localStorage.getItem(THEME_KEY);
+  return saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'system';
+};
+
 // Загрузка настроек из localStorage. Читаем синхронно при инициализации состояния,
 // а не в useEffect: иначе первый прогон эффекта темы успевал применить дефолтную
 // тему поверх той, что уже выставил main.tsx, и при заходе на страницу мигала
-// светлая тема. Логика чтения та же, что была раньше.
+// светлая тема. Логика чтения остальных полей та же, что была раньше.
 const loadSettings = (): UserSettings => {
+  const theme = loadTheme();
   const saved = localStorage.getItem(SETTINGS_KEY);
-  if (!saved) return defaultSettings;
+  if (!saved) return { ...defaultSettings, theme };
   try {
     const parsed = JSON.parse(saved);
-    // Объединяем с дефолтными, чтобы новые поля появились
-    return { ...defaultSettings, ...parsed };
+    // Объединяем с дефолтными, чтобы новые поля появились.
+    // theme идёт последним — он должен перебить значение из SETTINGS_KEY.
+    return { ...defaultSettings, ...parsed, theme };
   } catch (e) {
     console.error('Ошибка загрузки настроек:', e);
-    return defaultSettings;
+    return { ...defaultSettings, theme };
   }
 };
 
