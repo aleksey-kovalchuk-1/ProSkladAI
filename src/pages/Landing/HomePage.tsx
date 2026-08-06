@@ -29,20 +29,12 @@ const HomePage: React.FC = () => {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button asChild size="lg">
-                  <Link
-                    to="/register"
-                    className="inline-flex items-center text-white hover:text-white"
-                  >
+                  <Link to="/register">
                     Зарегистрироваться <ArrowRight size={20} className="ml-2" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <a
-                    href="https://t.me/ProskladaiBot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  >
+                  <a href="https://t.me/ProskladaiBot" target="_blank" rel="noopener noreferrer">
                     Попробовать бота <ArrowRight size={20} className="ml-2" />
                   </a>
                 </Button>
@@ -82,7 +74,7 @@ const HomePage: React.FC = () => {
                 key={feature.title}
                 className="border-t border-gray-200 dark:border-gray-700 pt-6"
               >
-                <span className="text-sm font-medium text-gray-400">
+                <span className="text-sm font-medium text-gray-500">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3 className="text-xl mt-2">{feature.title}</h3>
@@ -107,7 +99,7 @@ const HomePage: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, index) => (
               <div key={step.title}>
-                <span className="text-sm font-medium text-gray-400">
+                <span className="text-sm font-medium text-gray-500">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3 className="text-xl mt-2">{step.title}</h3>
@@ -146,20 +138,12 @@ const HomePage: React.FC = () => {
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Button asChild size="lg">
-                <Link
-                  to="/register"
-                  className="inline-flex items-center text-white hover:text-white"
-                >
+                <Link to="/register">
                   Создать аккаунт <ArrowRight size={20} className="ml-2" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a
-                  href="https://t.me/ProskladaiBot"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
+                <a href="https://t.me/ProskladaiBot" target="_blank" rel="noopener noreferrer">
                   Открыть бота
                 </a>
               </Button>
