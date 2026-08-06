@@ -303,15 +303,22 @@ const GoodsListPage: React.FC = () => {
       </Card>
 
       {/* Подтверждение удаления */}
+      {/*
+        The dialog stays open for the whole request: `ConfirmDialog` no longer self-closes,
+        and `handleDelete` clears `deleteConfirm` only after `removeGoods` has resolved.
+        `isLoading` drives the in-dialog spinner and disables both dialog buttons, which is
+        what the pre-redesign modal's "Удаление..." label did.
+      */}
       <ConfirmDialog
         open={deleteConfirm !== null}
         onOpenChange={(open) => {
-          if (!open) setDeleteConfirm(null);
+          if (!open && !isDeleting) setDeleteConfirm(null);
         }}
         title="Удалить товар?"
         description="Это действие невозможно отменить. Все связанные данные (SEO, инфографика, отчёты) будут удалены."
-        confirmLabel="Удалить"
+        confirmLabel={isDeleting ? 'Удаление...' : 'Удалить'}
         isDestructive
+        isLoading={isDeleting}
         onConfirm={() => {
           if (deleteConfirm) void handleDelete(deleteConfirm);
         }}
