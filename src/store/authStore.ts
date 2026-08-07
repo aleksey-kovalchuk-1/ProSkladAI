@@ -8,6 +8,7 @@ import {
   logout as apiLogout,
   getCurrentUser,
 } from '@/api/auth';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 interface AuthState {
   user: User | null;
@@ -26,7 +27,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       isLoading: false,
       error: null,
@@ -42,10 +43,10 @@ export const useAuthStore = create<AuthState>()(
             error: null,
             isAuthenticated: true,
           });
-        } catch (error: any) {
+        } catch (error) {
           set({
             isLoading: false,
-            error: error.message || 'Ошибка входа',
+            error: getErrorMessage(error, 'Ошибка входа'),
             isAuthenticated: false,
           });
           throw error;
@@ -66,10 +67,10 @@ export const useAuthStore = create<AuthState>()(
             error: null,
             isAuthenticated: true,
           });
-        } catch (error: any) {
+        } catch (error) {
           set({
             isLoading: false,
-            error: error.message || 'Ошибка регистрации',
+            error: getErrorMessage(error, 'Ошибка регистрации'),
             isAuthenticated: false,
           });
           throw error;

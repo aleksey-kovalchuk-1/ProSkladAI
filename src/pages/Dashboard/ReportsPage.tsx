@@ -35,6 +35,7 @@ import {
   Package,
   X,
 } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 const ReportsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -81,8 +82,8 @@ const ReportsPage: React.FC = () => {
         items = items.filter((r) => r.goods_id === selectedGoodsId);
       }
       setReports(items);
-    } catch (err: any) {
-      setError(err.message || 'Ошибка загрузки отчетов');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка загрузки отчетов'));
     } finally {
       setLoading(false);
     }
@@ -105,8 +106,8 @@ const ReportsPage: React.FC = () => {
       const newReport = await generateReport(selectedGoodsId);
       setReports((prev) => [newReport, ...prev]);
       setSuccess('Отчет успешно сгенерирован');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка генерации отчета');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка генерации отчета'));
     } finally {
       setGenerating(false);
     }
@@ -124,8 +125,8 @@ const ReportsPage: React.FC = () => {
       await deleteReport(id);
       setReports((prev) => prev.filter((r) => r.id !== id));
       setSuccess('Отчет удален');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка удаления отчета');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка удаления отчета'));
     } finally {
       setDeletingId(null);
       setConfirmDelete(null);
@@ -148,8 +149,8 @@ const ReportsPage: React.FC = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       setSuccess('Отчет скачан');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка скачивания отчета');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка скачивания отчета'));
     } finally {
       setDownloadingId(null);
     }

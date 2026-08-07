@@ -8,6 +8,7 @@ import {
   parseGoodsByArticle,
 } from '@/api/goods';
 import type { GoodsItem, PaginatedResponse } from '@/api/types';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 interface UseGoodsReturn {
   goods: GoodsItem[];
@@ -50,8 +51,8 @@ export const useGoods = (initialPage = 1, initialSize = 20): UseGoodsReturn => {
           size: response.size,
           pages: response.pages,
         });
-      } catch (err: any) {
-        setError(err.message || 'Ошибка загрузки товаров');
+      } catch (err) {
+        setError(getErrorMessage(err, 'Ошибка загрузки товаров'));
         setGoods([]);
       } finally {
         setLoading(false);
@@ -73,8 +74,8 @@ export const useGoods = (initialPage = 1, initialSize = 20): UseGoodsReturn => {
     try {
       const item = await getGoodsById(id);
       return item;
-    } catch (err: any) {
-      setError(err.message || 'Ошибка получения товара');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка получения товара'));
       throw err;
     } finally {
       setLoading(false);
@@ -92,8 +93,8 @@ export const useGoods = (initialPage = 1, initialSize = 20): UseGoodsReturn => {
         setGoods((prev) => [newItem, ...prev]);
         setPagination((prev) => ({ ...prev, total: prev.total + 1 }));
         return newItem;
-      } catch (err: any) {
-        setError(err.message || 'Ошибка создания товара');
+      } catch (err) {
+        setError(getErrorMessage(err, 'Ошибка создания товара'));
         throw err;
       } finally {
         setLoading(false);
@@ -112,8 +113,8 @@ export const useGoods = (initialPage = 1, initialSize = 20): UseGoodsReturn => {
         // Обновляем элемент в списке
         setGoods((prev) => prev.map((item) => (item.id === id ? updated : item)));
         return updated;
-      } catch (err: any) {
-        setError(err.message || 'Ошибка обновления товара');
+      } catch (err) {
+        setError(getErrorMessage(err, 'Ошибка обновления товара'));
         throw err;
       } finally {
         setLoading(false);
@@ -132,8 +133,8 @@ export const useGoods = (initialPage = 1, initialSize = 20): UseGoodsReturn => {
         // Убираем из списка
         setGoods((prev) => prev.filter((item) => item.id !== id));
         setPagination((prev) => ({ ...prev, total: prev.total - 1 }));
-      } catch (err: any) {
-        setError(err.message || 'Ошибка удаления товара');
+      } catch (err) {
+        setError(getErrorMessage(err, 'Ошибка удаления товара'));
         throw err;
       } finally {
         setLoading(false);
@@ -153,8 +154,8 @@ export const useGoods = (initialPage = 1, initialSize = 20): UseGoodsReturn => {
         setGoods((prev) => [parsed, ...prev]);
         setPagination((prev) => ({ ...prev, total: prev.total + 1 }));
         return parsed;
-      } catch (err: any) {
-        setError(err.message || 'Ошибка парсинга товара');
+      } catch (err) {
+        setError(getErrorMessage(err, 'Ошибка парсинга товара'));
         throw err;
       } finally {
         setLoading(false);

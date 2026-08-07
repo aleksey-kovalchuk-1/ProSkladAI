@@ -13,6 +13,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { Alert, Button, Card, CardContent, FormField, Input, Switch } from '@/components/ui';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 // Типы для настроек
 interface UserSettings {
@@ -120,8 +121,8 @@ const SettingsPage: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       setSuccess('Настройки успешно сохранены');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка сохранения настроек');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка сохранения настроек'));
     } finally {
       setSaving(false);
     }

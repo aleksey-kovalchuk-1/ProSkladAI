@@ -12,6 +12,7 @@ import {
   EyeOff,
 } from 'lucide-react';
 import { Alert, Button, Card, CardContent, FormField, Input } from '@/components/ui';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 // Предполагаем, что в api/auth.ts есть функции обновления профиля и пароля
 // Для демонстрации создадим заглушки, но в реальном проекте они должны быть реализованы
@@ -79,8 +80,8 @@ const ProfilePage: React.FC = () => {
       // в локальном состоянии страницы.
       setSuccess('Профиль успешно обновлён');
       setIsEditing(false);
-    } catch (err: any) {
-      setError(err.message || 'Ошибка обновления профиля');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка обновления профиля'));
     } finally {
       setSaving(false);
     }
@@ -105,8 +106,8 @@ const ProfilePage: React.FC = () => {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка смены пароля');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка смены пароля'));
     } finally {
       setIsChangingPassword(false);
     }
@@ -176,7 +177,7 @@ const ProfilePage: React.FC = () => {
         </div>
         <CardContent className="space-y-4">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 shrink-0 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
+            <div className="w-10 h-10 shrink-0 bg-blue-100 dark:bg-blue-900/30 rounded flex items-center justify-center text-blue-600 dark:text-blue-400">
               <UserIcon size={20} aria-hidden="true" />
             </div>
             {isEditing ? (
@@ -205,7 +206,7 @@ const ProfilePage: React.FC = () => {
           </div>
 
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400">
+            <div className="w-10 h-10 shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded flex items-center justify-center text-purple-600 dark:text-purple-400">
               <Mail size={20} aria-hidden="true" />
             </div>
             {isEditing ? (
@@ -231,7 +232,7 @@ const ProfilePage: React.FC = () => {
           </div>
 
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 shrink-0 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600 dark:text-green-400">
+            <div className="w-10 h-10 shrink-0 bg-green-100 dark:bg-green-900/30 rounded flex items-center justify-center text-green-600 dark:text-green-400">
               <Lock size={20} aria-hidden="true" />
             </div>
             <div className="flex-1">

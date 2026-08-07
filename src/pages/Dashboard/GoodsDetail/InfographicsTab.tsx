@@ -8,6 +8,7 @@ import {
 import type { GoodsItem } from '@/api/types';
 import { Alert, Button, ConfirmDialog, SelectableImageGrid } from '@/components/ui';
 import { Loader2, Save, Search, Trash2 } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 interface InfographicsTabProps {
   goodsItem: GoodsItem;
@@ -54,9 +55,9 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
         const images = await getGoodsInfographics(goodsId);
         if (cancelled) return;
         setInfographics(dedupe(images));
-      } catch (err: any) {
+      } catch (err) {
         if (cancelled) return;
-        setLoadError(err?.message || 'Не удалось загрузить сохранённую инфографику');
+        setLoadError(getErrorMessage(err, 'Не удалось загрузить сохранённую инфографику'));
       } finally {
         if (!cancelled) setInitialLoading(false);
       }
@@ -75,8 +76,8 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
       const result = await searchInfographics({ goods_id: goodsId, count: 20 });
       setFoundImages(dedupe(result.images || []));
       setSelectedFound([]);
-    } catch (err: any) {
-      setInfographicsError(err?.message || 'Ошибка поиска инфографики');
+    } catch (err) {
+      setInfographicsError(getErrorMessage(err, 'Ошибка поиска инфографики'));
     } finally {
       setInfographicsLoading(false);
     }
@@ -98,8 +99,8 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
       setFoundImages([]);
       setSelectedFound([]);
       setSelectedSaved([]);
-    } catch (err: any) {
-      setInfographicsError(err?.message || 'Ошибка сохранения инфографики');
+    } catch (err) {
+      setInfographicsError(getErrorMessage(err, 'Ошибка сохранения инфографики'));
     } finally {
       setInfographicsLoading(false);
     }
@@ -116,8 +117,8 @@ const InfographicsTab: React.FC<InfographicsTabProps> = ({ goodsItem }) => {
       setInfographics(remaining);
       setSelectedSaved([]);
       setDeleteOpen(false);
-    } catch (err: any) {
-      setInfographicsError(err?.message || 'Ошибка удаления инфографики');
+    } catch (err) {
+      setInfographicsError(getErrorMessage(err, 'Ошибка удаления инфографики'));
       setDeleteOpen(false);
     } finally {
       setIsDeleting(false);

@@ -18,6 +18,7 @@ import {
   SelectableImageGrid,
 } from '@/components/ui';
 import { Loader2, Minus, Package, Plus, Save, Search, Trash2 } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 /**
  * `SelectableImageGrid` использует `key={url}` во внутреннем .map (задача 11), поэтому
@@ -88,12 +89,12 @@ const InfographicsPage: React.FC = () => {
         const images = await getGoodsInfographics(selectedGoodsId);
         if (cancelled) return;
         setSavedImages(dedupe(images));
-      } catch (err: any) {
+      } catch (err) {
         if (cancelled) return;
         // Список чистится, иначе изображения предыдущего товара остались бы на экране
         // под баннером ошибки и выглядели бы как инфографика вновь выбранного товара.
         setSavedImages([]);
-        setLoadError(err?.message || 'Не удалось загрузить сохранённые изображения');
+        setLoadError(getErrorMessage(err, 'Не удалось загрузить сохранённые изображения'));
       } finally {
         if (!cancelled) setSavedLoading(false);
       }
@@ -126,8 +127,8 @@ const InfographicsPage: React.FC = () => {
       } else {
         setSuccess(`Найдено ${images.length} изображений`);
       }
-    } catch (err: any) {
-      setError(err?.message || 'Ошибка поиска инфографики');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка поиска инфографики'));
     } finally {
       setLoading(false);
     }
@@ -153,8 +154,8 @@ const InfographicsPage: React.FC = () => {
       setSelectedImages([]);
       setSelectedSaved([]);
       setSuccess('Изображения успешно сохранены');
-    } catch (err: any) {
-      setError(err?.message || 'Ошибка сохранения инфографики');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка сохранения инфографики'));
     } finally {
       setSaving(false);
     }
@@ -178,8 +179,8 @@ const InfographicsPage: React.FC = () => {
       setSelectedSaved([]);
       setDeleteOpen(false);
       setSuccess(`Удалено изображений: ${removedCount}`);
-    } catch (err: any) {
-      setError(err?.message || 'Ошибка удаления изображения');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка удаления изображения'));
       setDeleteOpen(false);
     } finally {
       setIsDeleting(false);

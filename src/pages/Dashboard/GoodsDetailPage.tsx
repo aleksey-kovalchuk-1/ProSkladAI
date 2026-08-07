@@ -16,6 +16,7 @@ import {
   BarChart3,
   Loader2,
 } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 type TabType = 'info' | 'seo' | 'infographics' | 'reports';
 
@@ -42,8 +43,8 @@ const GoodsDetailPage: React.FC = () => {
     try {
       const item = await getGoods(id);
       setGoodsItem(item);
-    } catch (err: any) {
-      setError(err?.message || 'Не удалось загрузить товар');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Не удалось загрузить товар'));
     } finally {
       setLoading(false);
     }

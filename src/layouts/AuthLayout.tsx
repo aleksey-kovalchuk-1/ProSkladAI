@@ -9,7 +9,7 @@ const AuthLayout: React.FC = () => {
         {/* Логотип и заголовок */}
         <div className="text-center">
           <Link to="/" className="inline-block">
-            <div className="mx-auto w-20 h-20 bg-blue-600 rounded flex items-center justify-center text-white text-4xl font-bold shadow-lg transform hover:scale-105 transition-transform duration-200">
+            <div className="mx-auto w-20 h-20 bg-blue-600 rounded flex items-center justify-center text-white text-4xl font-bold shadow-sm transform hover:scale-105 transition-transform duration-200">
               P
             </div>
           </Link>

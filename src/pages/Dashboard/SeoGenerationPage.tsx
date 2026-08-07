@@ -18,6 +18,7 @@ import {
   Select,
 } from '@/components/ui';
 import { Sparkles, Save, Loader2, Package } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 const SeoGenerationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -65,11 +66,11 @@ const SeoGenerationPage: React.FC = () => {
         if (cancelled) return;
         setSeoHistory(history);
         setGeneratedSeo(history.length > 0 ? history[0] : null); // последний
-      } catch (err: any) {
+      } catch (err) {
         if (cancelled) return;
         setSeoHistory([]);
         setGeneratedSeo(null);
-        setHistoryLoadError(err?.message || 'Не удалось загрузить историю SEO');
+        setHistoryLoadError(getErrorMessage(err, 'Не удалось загрузить историю SEO'));
       } finally {
         if (!cancelled) setHistoryLoading(false);
       }
@@ -96,8 +97,8 @@ const SeoGenerationPage: React.FC = () => {
       const history = await getSeoHistory(selectedGoodsId);
       setSeoHistory(history);
       setSuccess('SEO успешно сгенерировано');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка генерации SEO');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка генерации SEO'));
     } finally {
       setLoading(false);
     }
@@ -115,8 +116,8 @@ const SeoGenerationPage: React.FC = () => {
       const history = await getSeoHistory(selectedGoodsId);
       setSeoHistory(history);
       setSuccess('SEO сохранено в карточку товара');
-    } catch (err: any) {
-      setError(err.message || 'Ошибка сохранения SEO');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Ошибка сохранения SEO'));
     } finally {
       setSaving(false);
     }

@@ -4,6 +4,7 @@ import { generateSeo, saveSeoToGoods, getSeoHistory } from '@/api/seo';
 import type { GoodsItem, SeoGenerationResponse } from '@/api/types';
 import { Alert, Badge, Button } from '@/components/ui';
 import { Loader2, Save, Sparkles } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 interface SeoTabProps {
   goodsItem: GoodsItem;
@@ -46,9 +47,9 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
         if (history.length > 0) {
           setGeneratedSeo(history[0]); // последний
         }
-      } catch (err: any) {
+      } catch (err) {
         if (cancelled) return;
-        setLoadError(err?.message || 'Не удалось загрузить историю SEO');
+        setLoadError(getErrorMessage(err, 'Не удалось загрузить историю SEO'));
       } finally {
         if (!cancelled) setInitialLoading(false);
       }
@@ -71,8 +72,8 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
       // Обновляем историю
       const history = await getSeoHistory(goodsId);
       setSeoHistory(history);
-    } catch (err: any) {
-      setSeoError(err?.message || 'Ошибка генерации SEO');
+    } catch (err) {
+      setSeoError(getErrorMessage(err, 'Ошибка генерации SEO'));
     } finally {
       setSeoLoading(false);
     }
@@ -87,8 +88,8 @@ const SeoTab: React.FC<SeoTabProps> = ({ goodsItem }) => {
       await saveSeoToGoods(goodsId, generatedSeo);
       const history = await getSeoHistory(goodsId);
       setSeoHistory(history);
-    } catch (err: any) {
-      setSeoError(err?.message || 'Ошибка сохранения SEO');
+    } catch (err) {
+      setSeoError(getErrorMessage(err, 'Ошибка сохранения SEO'));
     } finally {
       setSeoLoading(false);
     }

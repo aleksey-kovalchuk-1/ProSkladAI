@@ -6,6 +6,7 @@ import { getGoodsInfographics } from '@/api/infographics';
 import type { GoodsItem } from '@/api/types';
 import { Alert, Badge, Button } from '@/components/ui';
 import { BarChart3, Loader2 } from 'lucide-react';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
 interface ReportsTabProps {
   goodsItem: GoodsItem;
@@ -41,9 +42,9 @@ const ReportsTab: React.FC<ReportsTabProps> = ({ goodsItem }) => {
         if (cancelled) return;
         setSeoCount(history.length);
         setInfographicsCount(images.length);
-      } catch (err: any) {
+      } catch (err) {
         if (cancelled) return;
-        setLoadError(err?.message || 'Не удалось загрузить сводку по товару');
+        setLoadError(getErrorMessage(err, 'Не удалось загрузить сводку по товару'));
       } finally {
         if (!cancelled) setInitialLoading(false);
       }
