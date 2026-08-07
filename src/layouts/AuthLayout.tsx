@@ -9,11 +9,11 @@ const AuthLayout: React.FC = () => {
         {/* Логотип и заголовок */}
         <div className="text-center">
           <Link to="/" className="inline-block">
-            <div className="mx-auto w-20 h-20 bg-blue-600 rounded flex items-center justify-center text-white text-4xl font-bold shadow-sm transform hover:scale-105 transition-transform duration-200">
+            <div className="mx-auto w-20 h-20 bg-blue-600 rounded-md flex items-center justify-center text-white text-4xl font-bold shadow-sm transform hover:scale-105 transition-transform duration-200">
               P
             </div>
           </Link>
-          <h1 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+          <h1 className="mt-6 text-3xl font-semibold text-gray-900 dark:text-white tracking-tight">
             Proskladai
           </h1>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
@@ -27,17 +27,17 @@ const AuthLayout: React.FC = () => {
         </div>
 
         {/* Нижний колонтитул */}
-        <div className="text-center text-xs text-gray-500 dark:text-gray-400 space-y-1">
+        <footer className="text-center text-xs text-gray-500 dark:text-gray-400 space-y-1">
           <p>&copy; {new Date().getFullYear()} Proskladai. Все права защищены.</p>
-          <p className="flex justify-center gap-4">
+          <nav className="flex justify-center gap-4">
             <Link to="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Политика конфиденциальности
             </Link>
             <Link to="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Условия использования
             </Link>
-          </p>
-        </div>
+          </nav>
+        </footer>
       </div>
     </div>
   );

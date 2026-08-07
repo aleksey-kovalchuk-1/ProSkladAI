@@ -183,9 +183,9 @@ const DashboardPage: React.FC = () => {
         <Card className="lg:col-span-2">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Активность за неделю
-              </h3>
+              </h2>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1">
                   <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
@@ -222,9 +222,9 @@ const DashboardPage: React.FC = () => {
         {/* Круговая диаграмма */}
         <Card>
           <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Распределение контента
-            </h3>
+            </h2>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -263,9 +263,9 @@ const DashboardPage: React.FC = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Последние товары
-              </h3>
+              </h2>
               <Link
                 to="/goods"
                 className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
@@ -310,9 +310,9 @@ const DashboardPage: React.FC = () => {
         {/* Последние действия / быстрые ссылки */}
         <Card>
           <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Быстрые действия
-            </h3>
+            </h2>
             <div className="grid grid-cols-2 gap-3">
               <Link
                 to="/goods/new"
