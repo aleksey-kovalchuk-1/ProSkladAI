@@ -15,14 +15,14 @@ const LandingFooter: React.FC = () => (
         <div>
           <h4 className="text-white font-medium mb-4">Продукт</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/features" className="hover:text-white transition-colors">Возможности</Link></li>
-            <li><Link to="/pricing" className="hover:text-white transition-colors">Цены</Link></li>
+            <li><Link to="/features" className="text-gray-400 hover:text-white transition-colors">Возможности</Link></li>
+            <li><Link to="/pricing" className="text-gray-400 hover:text-white transition-colors">Цены</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-white font-medium mb-4">Поддержка</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="https://t.me/ProskladaiBot" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Telegram-бот</a></li>
+            <li><a href="https://t.me/ProskladaiBot" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">Telegram-бот</a></li>
           </ul>
         </div>
         <div>
