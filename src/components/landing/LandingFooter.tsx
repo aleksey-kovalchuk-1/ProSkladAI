@@ -27,7 +27,7 @@ const LandingFooter: React.FC = () => (
         </div>
         <div>
           <h4 className="text-white font-medium mb-4">Юридическое</h4>
-          <ul className="space-y-2 text-sm text-gray-500">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>Политика конфиденциальности</li>
             <li>Условия использования</li>
           </ul>
